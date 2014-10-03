@@ -12,7 +12,7 @@ describe Hangman do
   it { should respond_to :partial_word}
 
   it "should pick a word bounded by the range" do
-    expect((5...12).cover?(@hangman.word_to_guess.length)).to be_true
+    expect((5..12).cover?(@hangman.word_to_guess.length)).to be_true
   end
 
   describe "guessing" do
@@ -55,6 +55,13 @@ describe Hangman do
         @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
       end
       expect(@hangman.status).to eq(Hangman.statuses[@hangman.count])
+    end
+
+    it "should know the player lost after 6 wrong guesses" do
+      6.times do
+        @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
+      end
+      expect(@hangman.lose?).to be_true
     end
 
   end

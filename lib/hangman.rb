@@ -58,4 +58,8 @@ class Hangman
     true unless self.partial_word.include?("_")
   end
 
+  def lose?
+    true if self.status.nil?
+  end
+
 end
