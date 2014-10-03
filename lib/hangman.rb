@@ -10,6 +10,12 @@ class Hangman
     @@statuses
   end
 
+  def self.import(file_name)
+    File.open(file_name) do 
+      |f| Marshal.load(f)
+    end
+  end
+
   def initialize(word_length = (5..12))
     # word_length is passed as a range which picks how long the word can be
     possible_words = []
@@ -61,5 +67,12 @@ class Hangman
   def lose?
     true if self.status.nil?
   end
+
+  def export(file_name)
+    File.open(file_name, 'wb+') do |file|
+      Marshal.dump(self, file)
+    end
+  end
+
 
 end
