@@ -12,34 +12,51 @@ describe Hangman do
   it { should respond_to :partial_word}
 
   it "should pick a word bounded by the range" do
-    expect((5..12).cover?(@hangman.word_to_guess.length)).to be_true
+    expect((5...12).cover?(@hangman.word_to_guess.length)).to be_true
   end
 
   describe "guessing" do
 
-    before { @hangman.guess('a') }
-    before { @hangman.guess('B') }
-
     it "should only add single characters to guesses" do
+      @hangman.guess('abc')
       expect(@hangman.guesses).to include('a')
     end
 
+    it "should not add the other characters" do
+      @hangman.guess('abc')
+      expect(@hangman.guesses).to_not include('b')
+    end
+
     it "should not care about case and store in lowercase" do
+      @hangman.guess('B')
       expect(@hangman.guesses).to include('b')
     end
 
-    it "@count should equal the number of guesses" do
-      expect(@hangman.count).to eq(@hangman.guesses.length)
+    it "should increment the count if the letter is not in the word" do
+      @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
+      expect(@hangman.count).to eq(1)
     end
   end
 
   describe "providing feedback" do
 
-    before {"aeiouy".each_char { |x| @hangman.guess(x) } }
-
-    it "should contain at least one vowel" do
-      expect("aeiouy".split(//).any? { |char| @hangman.partial_word.include?(char) }).to be_true
+    it "should contain the letter after making a valid guess" do
+      @hangman.guess(@hangman.word_to_guess[0])
+      expect(@hangman.partial_word.include?(@hangman.word_to_guess[0])).to be_true
     end
+
+    it "should know when the player has won" do
+      @hangman.word_to_guess.each_char { |char| @hangman.guess(char) }
+      expect(@hangman.win?).to be_true
+    end
+
+    it "should display a status based on the wrong letters" do
+      2.times do 
+        @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
+      end
+      expect(@hangman.status).to eq(Hangman.statuses[@hangman.count])
+    end
+
   end
   
 end

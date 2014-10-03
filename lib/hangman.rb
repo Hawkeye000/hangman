@@ -33,14 +33,15 @@ class Hangman
   end
 
   def status
-    @status
+    @status = Hangman.statuses[@count]
   end
 
   def guess(char)
+    # accepts only the first valid character of the input string
     char = char.chr.downcase
     if ("a".."z").cover?(char)
       @guesses << char
-      @count = @guesses.length
+      @count += 1 unless @word_to_guess.include?(char)
     end
   end
 
@@ -51,6 +52,10 @@ class Hangman
       correct_pos.each { |i| feedback[i] = guess }
     end
     feedback.join(" ")
+  end
+
+  def win?
+    true unless self.partial_word.include?("_")
   end
 
 end
