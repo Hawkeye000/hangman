@@ -14,7 +14,7 @@ class Hangman
     # word_length is passed as a range which picks how long the word can be
     possible_words = []
     @@dictionary.each { |word| possible_words << word if word_length.include?(word.length) }
-    @word_to_guess = possible_words[rand(0...possible_words.length)]
+    @word_to_guess = possible_words[rand(0...possible_words.length)].chomp.downcase
     @count = 0
     @guesses = []
     @status = Hangman.statuses[0]

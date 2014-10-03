@@ -2,5 +2,10 @@ require_relative '../lib/hangman.rb'
 
 @hangman = Hangman.new
 
-puts @hangman.word_to_guess
-puts @hangman.status
+loop do
+  print "#{@hangman.status}\n\n"
+  print "#{@hangman.partial_word}\n\n"
+  print "Guess a letter: "
+  @hangman.guess(gets.chomp)
+end
+
