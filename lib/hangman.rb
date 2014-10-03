@@ -9,11 +9,17 @@ class Hangman
     possible_words = []
     @@dictionary.each { |word| possible_words << word if word_length.include?(word.length) }
     @word_to_guess = possible_words[rand(0...possible_words.length)]
-    @guesses = 0
+    @count = 0
+    @guesses = []
   end
 
   def word_to_guess
     @word_to_guess
   end
 
+  def guess
+  end
+
+  def print 
+  end
 end
