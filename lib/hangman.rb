@@ -39,7 +39,7 @@ class Hangman
   def guess(char)
     # accepts only the first valid character of the input string
     char = char.chr.downcase
-    if ("a".."z").cover?(char)
+    if ("a".."z").cover?(char) && !@guesses.include?(char)
       @guesses << char
       @count += 1 unless @word_to_guess.include?(char)
     end

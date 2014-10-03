@@ -1,4 +1,5 @@
 require_relative '../lib/hangman.rb'
+require_relative 'spec_helper.rb'
 
 describe Hangman do 
 
@@ -33,7 +34,7 @@ describe Hangman do
     end
 
     it "should increment the count if the letter is not in the word" do
-      @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
+      make_wrong_guess(@hangman)
       expect(@hangman.count).to eq(1)
     end
   end
@@ -52,14 +53,14 @@ describe Hangman do
 
     it "should display a status based on the wrong letters" do
       2.times do 
-        @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
+        make_wrong_guess(@hangman)
       end
       expect(@hangman.status).to eq(Hangman.statuses[@hangman.count])
     end
 
     it "should know the player lost after 6 wrong guesses" do
       6.times do
-        @hangman.guess(('a'..'z').find { |char| @hangman.word_to_guess.include?(char) == false })
+        make_wrong_guess(@hangman)
       end
       expect(@hangman.lose?).to be_true
     end
